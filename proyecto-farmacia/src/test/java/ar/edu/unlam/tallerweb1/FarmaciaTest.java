@@ -14,7 +14,9 @@ import ar.edu.unlam.tallerweb1.modelo.Direccion;
 import ar.edu.unlam.tallerweb1.modelo.Farmacia;
 
 public class FarmaciaTest extends SpringTest{
-	
+	// Validar cantidad que tiene que traer
+	// Que sean los correctos
+	// Validar direcciones no solo por cantidad sino por 
 	/* 2) Hacer con junit un test que busque todas las farmacias de turno los días martes. */
 	@SuppressWarnings("unchecked")
 	@Test
@@ -76,37 +78,61 @@ public class FarmaciaTest extends SpringTest{
 	
 		/*Preparacion*/
 	Session session = getSession();	
-		
+	
+	// Farmacia 1
 	Farmacia f1 = new Farmacia();
 	f1.setNombre("Farmacia-Sol");
-	f1.setDiaDeTurno("Martes");
+	
 	Direccion d1 = new Direccion();
+	d1.setCalle("Florencio Varela");
+	session.save(d1);
+	
 	f1.setDireccion(d1);
 	session.save(f1);
 	
+	// Farmacia 2
 	Farmacia f2 = new Farmacia();
 	f2.setNombre("Farmacia-LaNueva");
-	f2.setDiaDeTurno("Martes");
-	f1.setDireccion(d1);
+	
+	Direccion d2 = new Direccion();
+	d2.setCalle("Florencio Varela");
+	session.save(d2);
+	
+	f1.setDireccion(d2);
 	session.save(f2);
 	
-	
+	// Farmacia 3
 	Farmacia f3 = new Farmacia();
 	f3.setNombre("Farmacia-Cascarria");
-	f3.setDiaDeTurno("Martes");
-	f1.setDireccion(d1);
+
+	Direccion d3 = new Direccion();
+	d3.setCalle("Puan");
+	session.save(d3);
+	
+	f3.setDireccion(d3);
 	session.save(f3);
 	
+	
+	// Farmacia 4
 	Farmacia f4 = new Farmacia();
 	f4.setNombre("Farmacia-4170");
-	f4.setDiaDeTurno("Lunes");
-	f1.setDireccion(d1);
+	
+	Direccion d4 = new Direccion();
+	d4.setCalle("Jujuy");
+	session.save(d4);
+	
+	f4.setDireccion(d4);
 	session.save(f4);
 	
+	// Farmacia 5
 	Farmacia f5 = new Farmacia();
-	f5.setNombre("Farmacia-Juana");
-	f5.setDiaDeTurno("Jueves");
-	f1.setDireccion(d1);
+	f5.setNombre("Farmacia-4170");
+	
+	Direccion d5 = new Direccion();
+	d5.setCalle("Puan");
+	session.save(d5);
+	
+	f5.setDireccion(d5);
 	session.save(f5);
 	
 		/*Ejecucion*/
@@ -115,16 +141,24 @@ public class FarmaciaTest extends SpringTest{
 		 List<Farmacia> resultados;
 		
 		 resultados = session.createCriteria(Farmacia.class)
-				 	.add(Restrictions.eq("diaDeTurno", "Martes"))
+				    .createAlias("direccion", "DireccionAlias")
+				    .add(Restrictions.eq("DireccionAlias.calle", "Puan"))
 					.list();
 			
 			
 	   /*Validacion*/	
 		
-		assertThat(resultados).hasSize(3);
-
+		assertThat(resultados).hasSize(2);
+		
+		for(Farmacia result : resultados){
+			assertThat(result.getDireccion().getCalle()).isEqualTo(d5.getCalle());
+		}
+		
+	// FOR dentro asserThat	Validar nombre de la calle sea el solicitado
 	//	asserThat(resultados.get(0).getPrecio().minor(1000));
 
 }
+	
+	
 	
 }	

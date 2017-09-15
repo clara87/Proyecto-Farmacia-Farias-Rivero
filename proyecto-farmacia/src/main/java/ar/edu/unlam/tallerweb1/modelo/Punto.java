@@ -1,5 +1,6 @@
 package ar.edu.unlam.tallerweb1.modelo;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,8 +10,10 @@ import javax.persistence.Id;
 public class Punto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_Punto")
 	private String id;
 	private String latitud;
+	private String longitud;
 	
 	public String getId() {
 		return id;
@@ -29,8 +32,6 @@ public class Punto {
 	}
 	public void setLongitud(String longitud) {
 		this.longitud = longitud;
-	}
-	private String longitud;
-	
+	}	
 	
 }
