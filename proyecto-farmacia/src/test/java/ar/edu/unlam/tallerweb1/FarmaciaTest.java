@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import ar.edu.unlam.tallerweb1.modelo.Barrio;
 import ar.edu.unlam.tallerweb1.modelo.Direccion;
 import ar.edu.unlam.tallerweb1.modelo.Farmacia;
 
@@ -74,7 +75,7 @@ public class FarmaciaTest extends SpringTest{
 	@Test
 	@Transactional
 	@Rollback(true)
-	public void test2FarmaciasDeUnaCalle() {
+	public void test3FarmaciasDeUnaCalle() {
 	
 		/*Preparacion*/
 	Session session = getSession();	
@@ -158,7 +159,107 @@ public class FarmaciaTest extends SpringTest{
 	//	asserThat(resultados.get(0).getPrecio().minor(1000));
 
 }
+
+	/* 4) Hacer con junit un test que busque todas las farmacias de un barrio. */
+	@SuppressWarnings("unchecked")
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void test4FarmaciasDeUnBarrio() {
 	
+		/*Preparacion*/
+	Session session = getSession();	
+	
+	// Barrio 1		-- Farmacia 1
+	
+	Barrio b1 = new Barrio();
+	b1.setNombre("San Nicolas");
+	session.save(b1);
+	
+	Direccion d1 = new Direccion();
+	d1.setCalle("Florencio Varela");	
+	d1.setBarrio(b1);	
+	session.save(d1);
+	
+	Farmacia f1 = new Farmacia();
+	f1.setNombre("Farmacia-Sol");
+	f1.setDireccion(d1);
+	session.save(f1);
+	
+	// Barrio 2	-- Farmacia 2
+	Barrio b2 = new Barrio();
+	b2.setNombre("Luz y fuerza");
+	session.save(b2);
+	
+	Direccion d2 = new Direccion();
+	d2.setCalle("Marmol");	
+	d2.setBarrio(b2);	
+	session.save(d2);
+	
+	Farmacia f2 = new Farmacia();
+	f2.setNombre("Farmacia-LaNueva");
+	f2.setDireccion(d2);	
+	session.save(f2);
+	
+	// Farmacia 3
+	Farmacia f3 = new Farmacia();
+	f3.setNombre("Farmacia-Cascarria");
+
+	Direccion d3 = new Direccion();
+	d3.setCalle("Puan");
+	d3.setBarrio(b2);
+	session.save(d3);
+	
+	f3.setDireccion(d3);
+	session.save(f3);
+	
+	
+	// Farmacia 4
+	Farmacia f4 = new Farmacia();
+	f4.setNombre("Farmacia-4170");
+	
+	Direccion d4 = new Direccion();
+	d4.setCalle("Jujuy");
+	d4.setBarrio(b1);
+	session.save(d4);
+	
+	f4.setDireccion(d4);
+	session.save(f4);
+	
+	// Farmacia 5
+	Farmacia f5 = new Farmacia();
+	f5.setNombre("Farmacia-4170");
+	
+	Direccion d5 = new Direccion();
+	d5.setCalle("Puan");
+	d5.setBarrio(b1);
+	session.save(d5);
+	
+	f5.setDireccion(d5);
+	session.save(f5);
+	
+		/*Ejecucion*/
+	
+	
+		 List<Farmacia> resultados;
+		
+		 resultados = session.createCriteria(Farmacia.class)
+				    .createAlias("direccion", "dire")
+				    .createAlias("dire.barrio", "bar")
+				    .add(Restrictions.eq("bar.nombre","San Nicolas"))
+					.list();
+		 
+			
+	   /*Validacion*/	
+		
+		assertThat(resultados).hasSize(3);
+		
+		for(Farmacia result : resultados){
+			assertThat(result.getDireccion().getBarrio()).isEqualTo(d1.getBarrio());
+		}
+		
+	
+}
 	
 	
 }	
