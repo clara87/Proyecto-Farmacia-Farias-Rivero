@@ -67,7 +67,12 @@ public class FarmaciaTest extends SpringTest{
 	   /*Validacion*/	
 		
 		assertThat(resultados).hasSize(3);
+		
+		for (Farmacia result : resultados) {
+			assertThat (result.getDiaDeTurno()).isEqualTo(f3.getDiaDeTurno());
+		}
 
+		
 }
 	
 	/* 3) Hacer con junit un test que busque todas las farmacias de una calle. */
