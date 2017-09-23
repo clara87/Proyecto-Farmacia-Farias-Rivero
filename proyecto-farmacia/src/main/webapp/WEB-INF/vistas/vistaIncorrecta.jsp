@@ -8,7 +8,10 @@
 </head>
 <body>
 
-Solo admite operación de suma (+)
+Solo admite operación de suma (+).
+<br>no se puede resolver ${operador}
+
+
 
 </body>
 </html>

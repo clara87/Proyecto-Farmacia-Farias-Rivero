@@ -9,7 +9,7 @@
 <body>
 
 
-El resultado de sumar ${o1} ${op} ${o2} da ${o1+o2}
+<h1>El resultado de sumar ${operando1} ${operador} ${operando2} da ${resul}</h1>
 
 </body>
 </html>
